@@ -5,7 +5,7 @@
 - [ ] Create post endpoint
     - [X] add endpoint
     - [ ] add security
-    - [X] prevent / make obvious id field is not requried (pk, autoincremented)
+    - [X] prevent / make obvious id field is not required (pk, auto-incremented)
     - [ ] add input validation
 - [ ] Add docker
 - [ ] Add fields to song for note, genre, artwork image

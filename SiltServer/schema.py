@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -8,12 +9,12 @@ class SongIn(BaseModel):
     album: str
     artist: str
     discog_link: str
-    spotify_link: str = None
-    youtube_link: str = None
-    itunes_link: str = None
+    spotify_link: Optional[str]
+    youtube_link: Optional[str]
+    itunes_link: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class SongOut(SongIn):
@@ -21,4 +22,4 @@ class SongOut(SongIn):
     added_date: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
