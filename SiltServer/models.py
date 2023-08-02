@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class Song(Base):
     __tablename__ = 'songs'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     song = Column(String)
     album = Column(String)
     artist = Column(String)

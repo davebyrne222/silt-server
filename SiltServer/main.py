@@ -6,13 +6,12 @@ from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 
 from models import Song as ModelSong
-from schema import Song as SchemaSong
+from schema import SongOut as SchemaSongOut, SongIn as SchemaSongIn
 
 load_dotenv('.env')
 
 app = FastAPI()
 
-# to avoid csrftokenError
 app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 
 
@@ -22,8 +21,8 @@ async def root():
     return songs
 
 
-@app.post('/song/', response_model=SchemaSong)
-async def song(song: SchemaSong):
+@app.post('/song/', response_model=SchemaSongOut)
+async def post_song(song: SchemaSongIn):
     db_song = ModelSong(
         song=song.song,
         album=song.album,
