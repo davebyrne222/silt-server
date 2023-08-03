@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware
 from pydantic_settings import BaseSettings
 
+from auth import router as auth_router
 from songs import router as songs_router
 
 
@@ -20,6 +21,7 @@ settings = Settings()
 app = FastAPI()
 app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 
+app.include_router(auth_router.router)
 app.include_router(songs_router.router)
 
 if __name__ == "__main__":

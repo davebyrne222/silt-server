@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from auth.dependencies import authorise
+from fastapi import APIRouter, Depends
 from fastapi_sqlalchemy import db
 
 from .models import Song as ModelSong
@@ -23,6 +24,7 @@ async def root():
 
 @router.post(
     '/',
+    dependencies=[Depends(authorise)],
     summary="Add a new song",
     response_model=SchemaSongOut,
     status_code=200)
