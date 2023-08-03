@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi_sqlalchemy import db
 
-from .models import UserModel
+from models.auth import UserModel
 
 security = HTTPBasic()
 

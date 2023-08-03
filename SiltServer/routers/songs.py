@@ -1,9 +1,9 @@
-from auth.dependencies import authorise
 from fastapi import APIRouter, Depends
 from fastapi_sqlalchemy import db
 
-from .models import Song as ModelSong
-from .schema import SongOut as SchemaSongOut, SongIn as SchemaSongIn
+from dependencies import authorise
+from models.songs import Song as ModelSong
+from schemas.songs import SongOut as SchemaSongOut, SongIn as SchemaSongIn
 
 router = APIRouter(
     dependencies=[],

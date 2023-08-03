@@ -1,8 +1,7 @@
 from typing import Annotated
 
+from dependencies import authorise
 from fastapi import APIRouter, Depends
-
-from .dependencies import authorise
 
 router = APIRouter(
     dependencies=None,
