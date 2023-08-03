@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic_settings import BaseSettings
 
-from routers import auth as auth_router, songs as songs_router
+from SiltServer.routers import auth as auth_router, songs as songs_router
 
 
 class Settings(BaseSettings):

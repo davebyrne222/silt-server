@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from dependencies import authorise
+from SiltServer.dependencies import authorise
 from fastapi import APIRouter, Depends
 
 router = APIRouter(
