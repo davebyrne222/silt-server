@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy.orm import Session
 
 from models.auth import ModelUser
@@ -10,7 +10,7 @@ def get_user(db: Session, username: bytes) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username.decode()).first()
 
 
-def get_songs(db: Session) -> list:
+def get_songs(db: Session) -> List[ModelSong]:
     return db.session.query(ModelSong).all()
 
 
