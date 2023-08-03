@@ -1,17 +1,12 @@
 import secrets
-from typing import Annotated, Optional
+from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi_sqlalchemy import db
 
-from .models import UserModel
+from database.crud import get_user
 
 security = HTTPBasic()
-
-
-def get_user(username: bytes) -> Optional[UserModel]:
-    return db.session.query(UserModel).filter(UserModel.username == username.decode()).first()
 
 
 def _raise_401():

@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class SongIn(BaseModel):
+class SchemaSongIn(BaseModel):
     song: str
     album: str
     artist: str
@@ -17,7 +17,7 @@ class SongIn(BaseModel):
         from_attributes = True
 
 
-class SongOut(SongIn):
+class SchemaSongOut(SchemaSongIn):
     id: int
     added_date: date
 

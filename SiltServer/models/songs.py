@@ -2,10 +2,10 @@ from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
-Base = declarative_base()
+from database.database import Base
 
 
-class Song(Base):
+class ModelSong(Base):
     __tablename__ = 'songs'
     id = Column(Integer, primary_key=True, autoincrement=True)
     song = Column(String)
