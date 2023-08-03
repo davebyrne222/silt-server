@@ -2,6 +2,8 @@
 
 - [X] Create project structure
 - [X] Create get endpoint
+- [ ] Restructure project to FastAPI structure
+- [ ] Refactor postgress url in .env
 - [ ] Create post endpoint
     - [X] add endpoint
     - [ ] add security

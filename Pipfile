@@ -11,6 +11,7 @@ pydantic = "*"
 alembic = "*"
 uvicorn = "*"
 python-dotenv = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 

@@ -1,41 +1,29 @@
 import os
-import argparse
-from dataclasses import dataclass
 
 import uvicorn
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware, db
+from pydantic_settings import BaseSettings
 
 from models import Song as ModelSong
 from schema import SongOut as SchemaSongOut, SongIn as SchemaSongIn
 
 
-@dataclass
-class DataContainer:
-    """Class for storing required data"""
+class Settings(BaseSettings):
+    """Loads from .env"""
+    SERVER_ADDR_HOST: str = "0.0.0.0"
+    SERVER_ADDR_PORT: int = 8081
+    SERVER_RELOAD: bool = False
 
-    args: type[argparse.Namespace] = argparse.Namespace
 
-
-load_dotenv('.env')
+settings = Settings()
 
 app = FastAPI()
-
 app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 
-dc = DataContainer()
 
-
-def get_args():
-    """Gets arguments and flags from command line."""
-    parser = argparse.ArgumentParser(description='')
-
-    parser.add_argument(
-            '--dev-mode', action='store_true',
-            help='Run uvicorn server in reload mode')
-
-    dc.args = parser.parse_args()
+# app.include_router(auth_router.router)
+# app.include_router(issues_router.router)
 
 
 @app.get("/")
@@ -60,9 +48,11 @@ async def post_song(song: SchemaSongIn):
     return db_song
 
 
-# To run locally
-if __name__ == '__main__':
-    # get command line args
-    get_args()
+if __name__ == "__main__":
+    print(settings.model_dump())
 
-    uvicorn.run("main:app", host='0.0.0.0', port=8000, reload=dc.args.dev_mode)
+    uvicorn.run("main:app",
+                host=settings.SERVER_ADDR_HOST,
+                port=settings.SERVER_ADDR_PORT,
+                reload=settings.SERVER_RELOAD
+                )
