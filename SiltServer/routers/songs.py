@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
-from fastapi_sqlalchemy import db
 
 from dependencies import authorise
-from models.songs import Song as ModelSong
-from schemas.songs import SongOut as SchemaSongOut, SongIn as SchemaSongIn
+from schemas.songs import SchemaSongOut, SchemaSongIn
+
+from database.crud import get_songs, create_song
 
 router = APIRouter(
     dependencies=[],
@@ -18,8 +18,7 @@ router = APIRouter(
     response_model=None,
     status_code=200)
 async def root():
-    songs = db.session.query(ModelSong).all()
-    return songs
+    return get_songs()
 
 
 @router.post(
@@ -28,16 +27,5 @@ async def root():
     summary="Add a new song",
     response_model=SchemaSongOut,
     status_code=200)
-async def post_song(song: SchemaSongIn):
-    db_song = ModelSong(
-        song=song.song,
-        album=song.album,
-        artist=song.artist,
-        discog_link=song.discog_link,
-        spotify_link=song.spotify_link,
-        youtube_link=song.youtube_link,
-        itunes_link=song.itunes_link
-    )
-    db.session.add(db_song)
-    db.session.commit()
-    return db_song
+async def post_song(song: SchemaSongIn) -> SchemaSongOut:
+    return create_song(song)
