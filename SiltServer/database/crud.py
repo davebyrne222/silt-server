@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, Type
 
 from sqlalchemy.orm import Session
 
@@ -11,8 +11,8 @@ def get_user(db: Session, username: bytes) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username.decode()).first()
 
 
-def get_songs(db: Session) -> List[ModelSong]:
-    return db.session.query(ModelSong).all()
+def get_songs(db: Session) -> list[Type[ModelSong]]:
+    return db.query(ModelSong).all()
 
 
 def create_song(db: Session, song: SchemaSongIn) -> ModelSong:
@@ -25,6 +25,7 @@ def create_song(db: Session, song: SchemaSongIn) -> ModelSong:
         youtube_link=song.youtube_link,
         itunes_link=song.itunes_link
     )
-    db.session.add(db_song)
-    db.session.commit()
+    db.add(db_song)
+    db.commit()
+    db.refresh(db_song)
     return db_song

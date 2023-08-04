@@ -20,6 +20,7 @@ The back-end server for the 'Songs I'm Listening To' web app.
     - [X] add security
     - [X] prevent / make obvious id field is not required (pk, auto-incremented)
 - [X] Extract server and host and port to config / .env
+- [ ] Add password hashing
 - [ ] Add pagination to get
 - [ ] Add docker
 - [ ] Add fields to song for note, genre, artwork image
