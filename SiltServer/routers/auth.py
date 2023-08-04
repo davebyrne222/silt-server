@@ -1,7 +1,8 @@
 from typing import Annotated
 
-from SiltServer.dependencies import authorise
 from fastapi import APIRouter, Depends
+
+from SiltServer.dependencies import authorise
 
 router = APIRouter(
     dependencies=None,

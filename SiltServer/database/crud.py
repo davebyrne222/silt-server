@@ -1,4 +1,5 @@
 from typing import Optional, List
+
 from sqlalchemy.orm import Session
 
 from SiltServer.models.auth import ModelUser

@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Date, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
 from SiltServer.database.database import Base

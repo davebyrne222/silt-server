@@ -1,7 +1,9 @@
 # Silt Server
+
 The back-end server for the 'Songs I'm Listening To' web app.
 
 # Run locally
+
 1. Add the top level path to the `PYTHONPATH` to enable absolute imports:
     ```shell
     export PYTHONPATH='.'

@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from SiltServer.database.crud import get_songs, create_song
 from SiltServer.dependencies import authorise
 from SiltServer.schemas.songs import SchemaSongOut, SchemaSongIn
-
-from SiltServer.database.crud import get_songs, create_song
 
 router = APIRouter(
     dependencies=[],
