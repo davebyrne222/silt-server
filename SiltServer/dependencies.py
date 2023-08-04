@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-from database.crud import get_user
+from SiltServer.database.crud import get_user
 
 security = HTTPBasic()
 

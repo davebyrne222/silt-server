@@ -1,9 +1,12 @@
+import sys
 import uvicorn
 from fastapi import FastAPI
 from pydantic_settings import BaseSettings
 
-from routers import auth as auth_router, songs as songs_router
+# Add current path to enable absolute imports
+# sys.path.insert(0, ".")
 
+from SiltServer.routers import auth as auth_router, songs as songs_router
 
 class Settings(BaseSettings):
     """Loads from .env"""

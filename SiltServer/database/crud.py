@@ -1,9 +1,9 @@
 from typing import Optional, List
 from sqlalchemy.orm import Session
 
-from models.auth import ModelUser
-from models.songs import ModelSong
-from schemas.songs import SchemaSongIn
+from SiltServer.models.auth import ModelUser
+from SiltServer.models.songs import ModelSong
+from SiltServer.schemas.songs import SchemaSongIn
 
 
 def get_user(db: Session, username: bytes) -> Optional[ModelUser]:
