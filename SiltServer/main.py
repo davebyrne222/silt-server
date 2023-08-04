@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic_settings import BaseSettings
 
 from SiltServer.database.database import engine, Base
-from SiltServer.routers import auth as auth_router, songs as songs_router
+from SiltServer.routers import songs as songs_router
 
 
 class Settings(BaseSettings):
@@ -20,7 +20,6 @@ Base.metadata.create_all(bind=engine, checkfirst=True)
 
 app = FastAPI()
 
-app.include_router(auth_router.router)
 app.include_router(songs_router.router)
 
 if __name__ == "__main__":
