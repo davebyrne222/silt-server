@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -18,7 +20,7 @@ router = APIRouter(
     summary="Get all songs",
     response_model=None,
     status_code=200)
-async def root(db: Session = Depends(get_db)):
+async def root(db: Annotated[Session, Depends(get_db)]):
     return get_songs(db)
 
 
@@ -28,5 +30,5 @@ async def root(db: Session = Depends(get_db)):
     summary="Add a new song",
     response_model=SchemaSongOut,
     status_code=200)
-async def post_song(song: SchemaSongIn, db: Session = Depends(get_db)) -> SchemaSongOut:
+async def post_song(song: SchemaSongIn, db: Annotated[Session, Depends(get_db)]) -> SchemaSongOut:
     return create_song(db, song)
