@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic_settings import BaseSettings
 
+from SiltServer.database.database import engine, Base
 from SiltServer.routers import auth as auth_router, songs as songs_router
 
 
@@ -13,6 +14,9 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Create tables from SQLAlchemy models
+Base.metadata.create_all(bind=engine, checkfirst=True)
 
 app = FastAPI()
 
