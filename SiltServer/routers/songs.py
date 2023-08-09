@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -18,7 +18,7 @@ router = APIRouter(
 @router.get(
     "/",
     summary="Get all songs",
-    response_model=None,
+    response_model=List[SchemaSongOut],
     status_code=200)
 async def root(db: Annotated[Session, Depends(get_db)]):
     return get_songs(db)
@@ -30,5 +30,5 @@ async def root(db: Annotated[Session, Depends(get_db)]):
     summary="Add a new song",
     response_model=SchemaSongOut,
     status_code=200)
-async def post_song(song: SchemaSongIn, db: Annotated[Session, Depends(get_db)]) -> SchemaSongOut:
+async def post_song(song: SchemaSongIn, db: Annotated[Session, Depends(get_db)]):
     return create_song(db, song)
