@@ -12,6 +12,9 @@ uvicorn = "*"
 python-dotenv = "*"
 pydantic-settings = "*"
 sqlalchemy = "*"
+python-multipart = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 

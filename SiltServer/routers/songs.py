@@ -5,13 +5,13 @@ from sqlalchemy.orm import Session
 
 from SiltServer.database.crud import get_songs, create_song
 from SiltServer.database.database import get_db
-from SiltServer.dependencies import authorise
+from SiltServer.dependencies.auth import verify_token
 from SiltServer.schemas.songs import SchemaSongOut, SchemaSongIn
 
 router = APIRouter(
     dependencies=[],
     prefix="/songs",
-    tags=["issues"]
+    tags=["songs"]
 )
 
 
@@ -26,7 +26,7 @@ async def root(db: Annotated[Session, Depends(get_db)]):
 
 @router.post(
     '/',
-    dependencies=[Depends(authorise)],
+    dependencies=[Depends(verify_token)],
     summary="Add a new song",
     response_model=SchemaSongOut,
     status_code=200)

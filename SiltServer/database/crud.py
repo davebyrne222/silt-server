@@ -8,7 +8,7 @@ from SiltServer.schemas.songs import SchemaSongIn
 
 
 def get_user(db: Session, username: bytes) -> Optional[ModelUser]:
-    return db.query(ModelUser).filter(ModelUser.username == username.decode()).first()
+    return db.query(ModelUser).filter(ModelUser.username == username).first()
 
 
 def get_songs(db: Session) -> list[Type[ModelSong]]:
