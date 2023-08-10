@@ -1,13 +1,15 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Optional
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+from jose.exceptions import ExpiredSignatureError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from SiltServer.database.crud import get_user
+from SiltServer.dependencies.exceptions import raise_401_expired_token, raise_401_invalid_token
 from SiltServer.database.database import get_db
 from SiltServer.models.auth import ModelUser
 
@@ -17,23 +19,11 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # to get a string like this run:
 # openssl rand -hex 32
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 0.5
 
 
-def _raise_401():
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-
-def get_username_from_token(token: str):
-    payload = jwt.decode(token, key=None, options={"verify_signature": False})
-    return payload.get("sub")
-
-
-def authenticate_user(db, username: str, password: str):
+def authenticate_user(db: Session, username: str, password: str):
+    print(db)
     user = get_user(db, username)
     if not user:
         return False
@@ -52,15 +42,27 @@ def create_access_token(user: ModelUser, expires_delta: Optional[timedelta]):
     return jwt.encode(to_encode, user.secret, algorithm=ALGORITHM)
 
 
-def verify_token(db: Annotated[Session, Depends(get_db)], token: Annotated[str, Depends(oauth2_scheme)]):
-    # get username from token
-    current_username = get_username_from_token(token)
+def _get_username_from_token(token: str):
+    payload = jwt.decode(token, key="", options={"verify_signature": False})
+    return payload.get("sub")
 
-    # Get user credentials from DB
-    current_user = get_user(db, current_username)
+
+def verify_token(db: Annotated[Session, Depends(get_db)], token: Annotated[str, Depends(oauth2_scheme)]):
 
     try:
-        payload = jwt.decode(token, current_user.secret, algorithms=[ALGORITHM])
+        # get username from token
+        current_username = _get_username_from_token(token)
+
+        # Get user credentials from DB
+        current_user = get_user(db, current_username)
+
+        # Attempt to decode: invalid token if error raised
+        jwt.decode(token, current_user.secret, algorithms=[ALGORITHM])
+
+    except ExpiredSignatureError:
+        raise_401_expired_token()
 
     except JWTError:
-        raise _raise_401()
+        raise raise_401_invalid_token()
+
+

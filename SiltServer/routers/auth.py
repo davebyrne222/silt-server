@@ -1,12 +1,13 @@
 from datetime import timedelta
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from SiltServer.database.database import get_db
 from SiltServer.dependencies.auth import authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from SiltServer.dependencies.exceptions import raise_401_invalid_creds
 from SiltServer.schemas.auth import Token as TokenSchema
 
 router = APIRouter(
@@ -26,7 +27,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: 
     user = authenticate_user(db, form_data.username, form_data.password)
 
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise_401_invalid_creds()
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
