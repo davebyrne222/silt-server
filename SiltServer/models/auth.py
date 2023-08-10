@@ -8,3 +8,4 @@ class ModelUser(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String)
     hash = Column(String)
+    secret = Column(String)
