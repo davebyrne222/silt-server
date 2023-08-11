@@ -34,12 +34,12 @@ SERVER_RELOAD="False"
 
 > [!NOTE]
 > *If running locally, this should be the same value used when
-> creating the PostgresDB instance. If running with Docker, this can be the value you wish to use (PostgressDB will be
+> creating the PostgresDB instance. If running with Docker, this can be the value you wish to use (PostgresDB will be
 > created with that value)
 
 
 > [!NOTE]
-> **If running locally, the <PostgresDB addr> can be set to `localhost`. If using Docker, it should be set to the
+> **If running locally, the \<PostgresDB addr\> can be set to `localhost`. If using Docker, it should be set to the
 > docker compose service name. Default for SiltServer is 'DB'
 
 # Usage
@@ -78,7 +78,7 @@ Assuming Docker-Compose is available on your local system, SiltServer can be run
 docker-compose up
 ```
 
-This will run the server on at the host IP and port specified in the `.env` file (see ??). The docs
+This will run the server on at the host IP and port specified in the `.env` file (see [Configuration](#Configuration)). The docs
 can be access by navigating to the `http://<ip>:<port>/docs`
 
 # To Do
