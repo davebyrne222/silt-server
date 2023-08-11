@@ -30,7 +30,7 @@ SERVER_RELOAD="False"
 - `SERVER_ADDR_HOST`: The desired host IP of the SiltServer. This can typically be set to `0.0.0.0`
 - `SERVER_ADDR_PORT`: The desired port of the SiltServer. This can typically be set to `8081`
 - `SERVER_RELOAD`: When `True`, the uvicorn server will reload on detected code changes. This should be used for
-  development purposes only and otherwise can be set to "False"
+  development purposes only and otherwise can be set to `False`
 
 > [!NOTE]
 > *: If running locally, this should be the same value used when
