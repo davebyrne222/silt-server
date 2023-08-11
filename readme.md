@@ -10,28 +10,37 @@ displays the required variables. Please note, only those with `<>` brackets in t
 
 ```.dotenv
 PYTHONPATH=/app/SiltServer:${PYTHONPATH}
-POSTGRES_USER="dave"
-POSTGRES_PASSWORD="tidussloan"
-POSTGRES_DB="silt-docker"
-DATABASE_URL='postgresql://dave:tidussloan@db/silt-docker'
+POSTGRES_USER="<username>"
+POSTGRES_PASSWORD="<password>"
+POSTGRES_DB="<database name>"
+DATABASE_URL='postgresql://<username>:<password>@<postgresDB addr>/<database name>'
 SERVER_ADDR_HOST="0.0.0.0"
 SERVER_ADDR_PORT="8081"
-SERVER_RELOAD="True"
+SERVER_RELOAD="False"
 ```
 
-- `PYTHONPATH`: This enables the absolute imports used within SiltServer. No changes required unless the dockerfile is
+- `PYTHONPATH`: This enables the absolute imports used within SiltServer. No changes required unless the `WORKING_DIR`
+  in the Dockerfile is
   changed
-- `POSTGRES_USER` \*: The username for the PostgresDB
-- `POSTGRES_PASSWORD`
-- POSTGRES_DB="silt-docker"
-- DATABASE_URL='postgresql://dave:tidussloan@db/silt-docker'
-- SERVER_ADDR_HOST="0.0.0.0"
-- SERVER_ADDR_PORT="8081"
-- SERVER_RELOAD="True"
+- `POSTGRES_USER` \*: The username for PostgresDB
+- `POSTGRES_PASSWORD` \*: The password for PostgresDB
+- `POSTGRES_DB` \*: The name of the PostgresDB database
+- `DATABASE_URL` \*\*: The PostgresDB database url. This facilitates the connection from FastAPI to Postgres and takes
+  the form: `postgresql://<username>:<password>@<postgresDB addr>/<database name>`
+- `SERVER_ADDR_HOST`: The desired host IP of the SiltServer. This can typically be set to `0.0.0.0`
+- `SERVER_ADDR_PORT`: The desired port of the SiltServer. This can typically be set to `8081`
+- `SERVER_RELOAD`: When `True`, the uvicorn server will reload on detected code changes. This should be used for
+  development purposes only and otherwise can be set to "False"
 
-[!NOTE]
-\*: If running locally, this should be set to the username set when
-  creating the PostgresDB. If running with Docker, this can be any username you wish
+> [!NOTE]
+> *: If running locally, this should be the same value used when
+> creating the PostgresDB instance. If running with Docker, this can be the value you wish to use (PostgressDB will be
+> created with that value)
+
+
+> [!NOTE]
+> **: If running locally, the <PostgresDB addr> can be set to `localhost`. If using Docker, it should be set to the
+> docker compose service name. Default for SiltServer is 'DB'
 
 # Usage
 
