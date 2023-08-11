@@ -21,7 +21,7 @@ SERVER_RELOAD="True"
 
 - `PYTHONPATH`: This enables the absolute imports used within SiltServer. No changes required unless the dockerfile is
   changed
-- `POSTGRES_USER` [^1]: The username for the PostgresDB
+- `POSTGRES_USER` \*: The username for the PostgresDB
 - `POSTGRES_PASSWORD`
 - POSTGRES_DB="silt-docker"
 - DATABASE_URL='postgresql://dave:tidussloan@db/silt-docker'
@@ -29,7 +29,8 @@ SERVER_RELOAD="True"
 - SERVER_ADDR_PORT="8081"
 - SERVER_RELOAD="True"
 
-[^1]: If running locally, this should be set to the username set when
+[!NOTE]
+\*: If running locally, this should be set to the username set when
   creating the PostgresDB. If running with Docker, this can be any username you wish
 
 # Usage
