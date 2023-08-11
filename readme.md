@@ -33,13 +33,13 @@ SERVER_RELOAD="False"
   development purposes only and otherwise can be set to `False`
 
 > [!NOTE]
-> *: If running locally, this should be the same value used when
+> *If running locally, this should be the same value used when
 > creating the PostgresDB instance. If running with Docker, this can be the value you wish to use (PostgressDB will be
 > created with that value)
 
 
 > [!NOTE]
-> **: If running locally, the <PostgresDB addr> can be set to `localhost`. If using Docker, it should be set to the
+> **If running locally, the <PostgresDB addr> can be set to `localhost`. If using Docker, it should be set to the
 > docker compose service name. Default for SiltServer is 'DB'
 
 # Usage
