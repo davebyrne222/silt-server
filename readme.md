@@ -99,4 +99,5 @@ can be access by navigating to the `http://<ip>:<port>/docs`
 - [ ] Add endpoint tests?
 - [X] Change auth to JWT
 - [ ] Add migration support (alembic?)
+  - [ ] Initialise users table with user (use .env for user details)
 - [ ] Add HTTPS support?

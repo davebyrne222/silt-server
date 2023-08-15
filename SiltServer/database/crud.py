@@ -11,8 +11,8 @@ def get_user(db: Session, username: str) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username).first()
 
 
-def get_songs(db: Session) -> list[Type[ModelSong]]:
-    return db.query(ModelSong).all()
+def get_songs(db: Session, limit: int = 1, offset: int = 10) -> list[Type[ModelSong]]:
+    return db.query(ModelSong).offset(offset).limit(limit)
 
 
 def create_song(db: Session, song: SchemaSongIn) -> ModelSong:
