@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Generic, TypeVar
 from typing import Optional
 
 from pydantic import BaseModel
@@ -23,3 +24,14 @@ class SchemaSongOut(SchemaSongIn):
 
     class Config:
         from_attributes = True
+
+
+M = TypeVar('M')
+
+
+class PaginatedResponse(BaseModel, Generic[M]):
+    total: int
+    count: int
+    limit: int
+    offset: int
+    items: list[M]
