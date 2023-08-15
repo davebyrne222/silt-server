@@ -1,6 +1,6 @@
 from typing import Annotated, List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from SiltServer.database.crud import get_songs, create_song
@@ -20,8 +20,11 @@ router = APIRouter(
     summary="Get all songs",
     response_model=List[SchemaSongOut],
     status_code=200)
-async def root(db: Annotated[Session, Depends(get_db)]):
-    return get_songs(db)
+async def root(
+        db: Annotated[Session, Depends(get_db)],
+        limit: int = Query(1, ge=1),
+        offset: int = Query(10, ge=0)):
+    return get_songs(db, limit=limit, offset=offset)
 
 
 @router.post(
