@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from SiltServer.database.crud import get_songs, create_song
 from SiltServer.database.database import get_db
 from SiltServer.dependencies.auth import verify_token
-from SiltServer.schemas.songs import SchemaSongOut, SchemaSongIn
+from SiltServer.schemas.songs import SchemaSongOut, SchemaSongIn, PaginatedResponse
 
 router = APIRouter(
     dependencies=[],
@@ -17,8 +17,8 @@ router = APIRouter(
 
 @router.get(
     "/",
-    summary="Get all songs",
-    response_model=List[SchemaSongOut],
+    summary="Get songs",
+    response_model=PaginatedResponse[SchemaSongOut],
     status_code=200)
 async def root(
         db: Annotated[Session, Depends(get_db)],

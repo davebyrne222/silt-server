@@ -1,21 +1,29 @@
-from typing import Optional, Type
+from typing import Optional
 
 from sqlalchemy.orm import Session
 
 from SiltServer.models.auth import ModelUser
 from SiltServer.models.songs import ModelSong
-from SiltServer.schemas.songs import SchemaSongIn
+from SiltServer.schemas.songs import PaginatedResponse, SchemaSongIn, SchemaSongOut
 
 
 def get_user(db: Session, username: str) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username).first()
 
 
-def get_songs(db: Session, limit: int = 1, offset: int = 10) -> list[Type[ModelSong]]:
-    return db.query(ModelSong).offset(offset).limit(limit)
+def get_songs(db: Session, limit: int = 1, offset: int = 10) -> PaginatedResponse[SchemaSongOut]:
+    results = db.query(ModelSong).offset(offset).limit(limit)
+    total = db.query(ModelSong.id).count()
+    return PaginatedResponse(
+        count=len(list(results)),
+        total=total,
+        items=results,
+        limit=limit,
+        offset=offset
+    )
 
 
-def create_song(db: Session, song: SchemaSongIn) -> ModelSong:
+def create_song(db: Session, song: SchemaSongIn) -> SchemaSongOut:
     db_song = ModelSong(
         song=song.song,
         album=song.album,
