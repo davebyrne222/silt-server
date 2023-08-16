@@ -92,7 +92,7 @@ can be access by navigating to the `http://<ip>:<port>/docs`
     - [X] prevent / make obvious id field is not required (pk, auto-incremented)
 - [X] Extract server and host and port to config / .env
 - [X] Add password hashing
-- [ ] Add pagination to get
+- [X] Add pagination to get
 - [X] Add docker
 - [ ] Add fields to song for note, genre, artwork image
 - [ ] Add unit tests
