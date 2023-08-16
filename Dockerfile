@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Set the working directory in the container
-WORKDIR /app/SiltServer
+WORKDIR /app
 
 # Install pipenv
 RUN pip install pipenv
@@ -20,4 +20,4 @@ COPY SiltServer/ SiltServer/
 EXPOSE ${SERVER_ADDR_PORT}
 
 # Run the FastAPI application
-CMD ["pipenv", "run", "python", "main.py"]
+CMD ["pipenv", "run", "python", "SiltServer/main.py"]
