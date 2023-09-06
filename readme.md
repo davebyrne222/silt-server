@@ -47,28 +47,28 @@ SERVER_RELOAD="False"
 ## Run Locally
 
 1. Install `pipenv`:
-   ```shell
-   pip install pipenv
-   ```
+    ```shell
+    pip install pipenv
+    ```
 
 2. Install dependencies:
-   ```shell
-   pipenv install 
-   ```
-   This will create a virtual environment and install all dependencies within it
+    ```shell
+    pipenv install 
+    ```
+    This will create a virtual environment and install all dependencies within it
 
 3. Add the top level / root path to the `PYTHONPATH` to enable absolute imports:
     ```shell
     export PYTHONPATH='.'
     ```
-   **N.B.**: The working directory should be the SiltServer root dir before running this command
+    **N.B.**: The working directory should be the SiltServer root dir before running this command
 
 4. Run the uvicorn server:
-   ```shell
-   pipenv run python SiltServer/main.py
-   ```
-   This will run the server on at the host IP and port specified in the `.env` file (see ??). The docs
-   can be access by navigating to  `http://<ip>:<port>/docs`
+    ```shell
+    pipenv run python SiltServer/main.py
+    ```
+    This will run the server on at the host IP and port specified in the `.env` file (see ??). The docs
+    can be access by navigating to  `http://<ip>:<port>/docs`
 
 ## Run Using Docker-Compose
 
@@ -78,8 +78,27 @@ Assuming Docker-Compose is available on your local system, SiltServer can be run
 docker-compose up
 ```
 
-This will run the server on at the host IP and port specified in the `.env` file (see [Configuration](#Configuration)). The docs
+This will run the server on at the host IP and port specified in the `.env` file (see [Configuration](#Configuration)).
+The docs
 can be access by navigating to the `http://<ip>:<port>/docs`
+
+# Run Unit Tests (PyTest)
+
+## Locally
+
+First, ensure the database and api are running as per [Usage](#Usage)
+
+1. Run the unit tests with the following command:
+    ```shell
+    pytest
+    ```
+
+## Docker-Compose
+
+1. Run the unit tests with the following command:
+    ```shell
+    docker-compose run app pipenv run pytest
+    ```
 
 # To Do
 
@@ -99,5 +118,5 @@ can be access by navigating to the `http://<ip>:<port>/docs`
 - [ ] Add endpoint tests?
 - [X] Change auth to JWT
 - [ ] Add migration support (alembic?)
-  - [ ] Initialise users table with user (use .env for user details)
+    - [ ] Initialise users table with user (use .env for user details)
 - [ ] Add HTTPS support?
