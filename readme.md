@@ -90,14 +90,14 @@ First, ensure the database and api are running as per [Usage](#Usage)
 
 1. Run the unit tests with the following command:
     ```shell
-    pytest
+    pytest -v -rA
     ```
 
 ## Docker-Compose
 
 1. Run the unit tests with the following command:
     ```shell
-    docker-compose run app pipenv run pytest
+    docker-compose run app pipenv run pytest -v -rA
     ```
 
 # To Do
