@@ -1,9 +1,10 @@
 import os
 from fastapi.testclient import TestClient
+import pytest
 
 from SiltServer.main import app
 from SiltServer.schemas.auth import Token
-from SiltServer.schemas.songs import PaginatedResponse
+from SiltServer.schemas.songs import PaginatedResponse, SchemaSongOut
 
 client = TestClient(app)
 
@@ -19,6 +20,7 @@ def assert_valid_response(model, json):
 
 def test_get_songs():
     response = client.get("/songs")
+
     assert response.status_code == 200
 
     # Validate response against Pydantic model
@@ -30,6 +32,7 @@ def test_login_failure():
     assert response.status_code == 401
 
 
+@pytest.fixture(name="token")
 def test_login_success():
 
     response = client.post("/token",
@@ -42,4 +45,27 @@ def test_login_success():
 
     assert_valid_response(Token, response.json())
 
+    return response.json().get("access_token")
 
+
+def test_add_songs(token):
+    header = dict(Authorization=f"Bearer {token}")
+
+    body = dict(
+        song = "test song",
+        album = "test album",
+        artist = "test artist",
+        discog_link = "test discog_link",
+        spotify_link = "test spotify_link",
+        youtube_link = "test youtube_link",
+        itunes_link = "test itunes_link"
+    )
+
+    response = client.post("/songs",
+                           headers=header,
+                           json=body
+                           )
+
+    assert response.status_code == 200
+
+    assert_valid_response(SchemaSongOut, response.json())
