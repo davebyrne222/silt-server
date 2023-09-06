@@ -1,3 +1,4 @@
+import os
 from fastapi.testclient import TestClient
 
 from SiltServer.main import app
@@ -30,7 +31,13 @@ def test_login_failure():
 
 
 def test_login_success():
-    response = client.post("/token", data=dict(username="davebyrne", password="1234"))
+
+    response = client.post("/token",
+                           data=dict(
+                               username=f"{os.getenv('TEST_USERNAME')}",
+                               password=f"{os.getenv('TEST_PASSWORD')}"
+                                    )
+                           )
     assert response.status_code == 200
 
     assert_valid_response(Token, response.json())
