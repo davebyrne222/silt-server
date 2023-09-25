@@ -32,7 +32,6 @@ def test_login_failure():
     assert response.status_code == 401
 
 
-@pytest.fixture(name="token")
 def test_login_success():
 
     response = client.post("/token",
@@ -48,17 +47,28 @@ def test_login_success():
     return response.json().get("access_token")
 
 
+@pytest.fixture(name="token")
+def get_token():
+    response = client.post("/token",
+                           data=dict(
+                               username=f"{os.getenv('TEST_USERNAME')}",
+                               password=f"{os.getenv('TEST_PASSWORD')}"
+                           )
+                           )
+
+    return response.json().get("access_token")
+
 def test_add_songs(token):
     header = dict(Authorization=f"Bearer {token}")
 
     body = dict(
-        song = "test song",
-        album = "test album",
-        artist = "test artist",
-        discog_link = "test discog_link",
-        spotify_link = "test spotify_link",
-        youtube_link = "test youtube_link",
-        itunes_link = "test itunes_link"
+        song="test song",
+        album="test album",
+        artist="test artist",
+        discog_link="test discog_link",
+        spotify_link="test spotify_link",
+        youtube_link="test youtube_link",
+        itunes_link="test itunes_link"
     )
 
     response = client.post("/songs",
