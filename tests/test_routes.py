@@ -1,6 +1,7 @@
 import os
-from fastapi.testclient import TestClient
+
 import pytest
+from fastapi.testclient import TestClient
 
 from SiltServer.main import app
 from SiltServer.schemas.auth import Token
@@ -32,21 +33,6 @@ def test_login_failure():
     assert response.status_code == 401
 
 
-def test_login_success():
-
-    response = client.post("/token",
-                           data=dict(
-                               username=f"{os.getenv('TEST_USERNAME')}",
-                               password=f"{os.getenv('TEST_PASSWORD')}"
-                                    )
-                           )
-    assert response.status_code == 200
-
-    assert_valid_response(Token, response.json())
-
-    return response.json().get("access_token")
-
-
 @pytest.fixture(name="token")
 def get_token():
     response = client.post("/token",
@@ -55,11 +41,19 @@ def get_token():
                                password=f"{os.getenv('TEST_PASSWORD')}"
                            )
                            )
+    return response
 
-    return response.json().get("access_token")
+
+def test_login_success(token):
+    assert token.status_code == 200
+
+    assert_valid_response(Token, token.json())
+
+    return token.json().get("access_token")
+
 
 def test_add_songs(token):
-    header = dict(Authorization=f"Bearer {token}")
+    header = dict(Authorization=f"Bearer {token.json().get('access_token')}")
 
     body = dict(
         song="test song",
