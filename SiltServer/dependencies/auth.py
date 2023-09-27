@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from SiltServer.database.crud import get_user
 from SiltServer.database.database import get_db
-from SiltServer.dependencies.exceptions import raise_401_expired_token, raise_401_invalid_token
+from SiltServer.dependencies.exceptions import raise_401_invalid_creds, raise_401_expired_token, raise_401_invalid_token
 from SiltServer.models.auth import ModelUser
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -53,6 +53,10 @@ def verify_token(db: Annotated[Session, Depends(get_db)], token: Annotated[str, 
 
         # Get user credentials from DB
         current_user = get_user(db, current_username)
+
+        # token does not represent a valid user
+        if not current_user:
+            raise_401_invalid_token()
 
         # Attempt to decode: invalid token if error raised
         jwt.decode(token, current_user.secret, algorithms=[ALGORITHM])
