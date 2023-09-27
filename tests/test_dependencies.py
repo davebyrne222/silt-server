@@ -37,8 +37,7 @@ def test_raise_401_expired_token():
     assert exc.value.detail == "Token has expired"
 
 
-def test_authenticate_user():
-    db = next(get_db())  # generator function. Need to invoke yield
+def test_authenticate_user(db):
     username = os.getenv("TEST_USERNAME")
     pwd = os.getenv("TEST_PASSWORD")
     user = authenticate_user(db, username, pwd)
@@ -55,14 +54,12 @@ def test_create_access_token(token):
     assert decoded.get("sub") == USER.username
 
 
-def test_verify_token_success(token):
-    db = next(get_db())
+def test_verify_token_success(db, token):
     assert not verify_token(db, token)
 
 
-def test_verify_token_invalid_username():
+def test_verify_token_invalid_username(db):
     """Test to ensure username decoded from JWT is valid i.e. a user in the database"""
-    db = next(get_db())
 
     invalid_user = ModelUser(
         id=USER.id,
@@ -79,15 +76,13 @@ def test_verify_token_invalid_username():
     assert exc.value.detail == "Could not validate token"
 
 
-def test_verify_token_invalid_token():
-    db = next(get_db())
+def test_verify_token_invalid_token(db):
     with pytest.raises(HTTPException) as exc:
         verify_token(db, "faketoken")
     assert exc.value.detail == "Could not validate token"
 
 
-def test_verify_token_expired_token():
-    db = next(get_db())
+def test_verify_token_expired_token(db):
     token = create_access_token(USER, timedelta(-15))
     with pytest.raises(HTTPException) as exc:
         verify_token(db, token)
