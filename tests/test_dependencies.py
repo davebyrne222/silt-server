@@ -84,3 +84,11 @@ def test_verify_token_invalid_token():
     with pytest.raises(HTTPException) as exc:
         verify_token(db, "faketoken")
     assert exc.value.detail == "Could not validate token"
+
+
+def test_verify_token_expired_token():
+    db = next(get_db())
+    token = create_access_token(USER, timedelta(-15))
+    with pytest.raises(HTTPException) as exc:
+        verify_token(db, token)
+    assert exc.value.detail == "Token has expired"
