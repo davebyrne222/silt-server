@@ -106,16 +106,19 @@ First, ensure the database and api are running as per [Usage](#Usage)
 - [X] Create get endpoint
 - [X] Restructure project to FastAPI structure
 - [X] Create post endpoint
-    - [X] add endpoint
-    - [X] add security
-    - [X] prevent / make obvious id field is not required (pk, auto-incremented)
+  - [X] add endpoint
+  - [X] add security
+  - [X] prevent / make obvious id field is not required (pk, auto-incremented)
 - [X] Extract server and host and port to config / .env
 - [X] Add password hashing
 - [X] Add pagination to get
 - [X] Add docker
 - [ ] Add fields to song for note, genre, artwork image
 - [ ] Add unit tests
-- [ ] Add endpoint tests?
+  - [X] Add tests for routes, dependencies, and database ops
+  - [ ] Auto populate database with data
+  - [ ] Tear down database after tests
+- [ ] Add logging
 - [X] Change auth to JWT
 - [ ] Add migration support (alembic?)
     - [ ] Initialise users table with user (use .env for user details)
