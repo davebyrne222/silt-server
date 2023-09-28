@@ -46,10 +46,8 @@ def get_token():
 
 def test_login_success(token):
     assert token.status_code == 200
-
     assert_valid_response(Token, token.json())
 
-    return token.json().get("access_token")
 
 
 def test_add_songs(token):
