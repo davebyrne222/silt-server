@@ -12,10 +12,10 @@ def get_user_db(db: Session, username: str) -> Optional[ModelUser]:
 
 
 def get_songs_db(db: Session, limit: int = 50, offset: int = 0) -> PaginatedResponse:
-    results = db.query(ModelSong).offset(offset).limit(limit)
+    results = list(db.query(ModelSong).offset(offset).limit(limit))
     total = db.query(ModelSong.id).count()
     return PaginatedResponse(
-        count=len(list(results)),
+        count=len(results),
         total=total,
         items=results,
         limit=limit,
