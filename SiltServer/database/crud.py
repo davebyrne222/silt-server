@@ -11,7 +11,7 @@ def get_user(db: Session, username: str) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username).first()
 
 
-def get_songs(db: Session, limit: int = 1, offset: int = 10) -> PaginatedResponse[SchemaSongOut]:
+def get_songs(db: Session, limit: int = 10, offset: int = 0) -> PaginatedResponse:
     results = db.query(ModelSong).offset(offset).limit(limit)
     total = db.query(ModelSong.id).count()
     return PaginatedResponse(
@@ -24,16 +24,8 @@ def get_songs(db: Session, limit: int = 1, offset: int = 10) -> PaginatedRespons
 
 
 def create_song(db: Session, song: SchemaSongIn) -> SchemaSongOut:
-    db_song = ModelSong(
-        song=song.song,
-        album=song.album,
-        artist=song.artist,
-        discog_link=song.discog_link,
-        spotify_link=song.spotify_link,
-        youtube_link=song.youtube_link,
-        itunes_link=song.itunes_link
-    )
-    db.add(db_song)
+    song = ModelSong(**song.__dict__)
+    db.add(song)
     db.commit()
-    db.refresh(db_song)
-    return db_song
+    db.refresh(song)
+    return SchemaSongOut(**song.__dict__)
