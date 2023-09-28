@@ -22,7 +22,7 @@ router = APIRouter(
     status_code=200)
 async def get_songs(
         db: Annotated[Session, Depends(get_db)],
-        limit: int = Query(10, ge=1, le=50),
+        limit: int = Query(50, ge=1, le=50),
         offset: int = Query(0, ge=0)):
     return get_songs_db(db, limit=limit, offset=offset)
 
