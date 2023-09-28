@@ -15,6 +15,9 @@ sqlalchemy = "*"
 python-multipart = "*"
 python-jose = { extras = ["cryptography"], version = "*" }
 passlib = { extras = ["bcrypt"], version = "*" }
+httpx = "*"
+pytest = "*"
+pytest-env = "*"
 
 [dev-packages]
 

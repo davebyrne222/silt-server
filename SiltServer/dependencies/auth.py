@@ -8,9 +8,9 @@ from jose.exceptions import ExpiredSignatureError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from SiltServer.database.crud import get_user
+from SiltServer.database.crud import get_user_db
 from SiltServer.database.database import get_db
-from SiltServer.dependencies.exceptions import raise_401_expired_token, raise_401_invalid_token
+from SiltServer.dependencies.exceptions import raise_401_invalid_creds, raise_401_expired_token, raise_401_invalid_token
 from SiltServer.models.auth import ModelUser
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -23,7 +23,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 1
 
 
 def authenticate_user(db: Session, username: str, password: str):
-    user = get_user(db, username)
+    user = get_user_db(db, username)
     if not user:
         return False
     if not pwd_context.verify(password, user.hash):
@@ -52,7 +52,11 @@ def verify_token(db: Annotated[Session, Depends(get_db)], token: Annotated[str, 
         current_username = _get_username_from_token(token)
 
         # Get user credentials from DB
-        current_user = get_user(db, current_username)
+        current_user = get_user_db(db, current_username)
+
+        # token does not represent a valid user
+        if not current_user:
+            raise_401_invalid_token()
 
         # Attempt to decode: invalid token if error raised
         jwt.decode(token, current_user.secret, algorithms=[ALGORITHM])

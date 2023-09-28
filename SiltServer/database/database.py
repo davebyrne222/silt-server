@@ -1,11 +1,11 @@
 import os
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 # DB connection / interface
-engine = create_engine(os.environ['DATABASE_URL'])
+DB_URL = os.environ['POSTGRES_TEST_URL'] if os.environ['TESTING'] == '1' else os.environ['POSTGRES_URL']
+engine = create_engine(DB_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -7,33 +7,25 @@ from SiltServer.models.songs import ModelSong
 from SiltServer.schemas.songs import PaginatedResponse, SchemaSongIn, SchemaSongOut
 
 
-def get_user(db: Session, username: str) -> Optional[ModelUser]:
+def get_user_db(db: Session, username: str) -> Optional[ModelUser]:
     return db.query(ModelUser).filter(ModelUser.username == username).first()
 
 
-def get_songs(db: Session, limit: int = 1, offset: int = 10) -> PaginatedResponse[SchemaSongOut]:
-    results = db.query(ModelSong).offset(offset).limit(limit)
+def get_songs_db(db: Session, limit: int = 50, offset: int = 0) -> PaginatedResponse:
+    results = list(db.query(ModelSong).offset(offset).limit(limit))
     total = db.query(ModelSong.id).count()
     return PaginatedResponse(
-        count=len(list(results)),
+        count=len(results),
         total=total,
-        items=results,
+        items=[SchemaSongOut(**result.__dict__) for result in results],
         limit=limit,
         offset=offset
     )
 
 
-def create_song(db: Session, song: SchemaSongIn) -> SchemaSongOut:
-    db_song = ModelSong(
-        song=song.song,
-        album=song.album,
-        artist=song.artist,
-        discog_link=song.discog_link,
-        spotify_link=song.spotify_link,
-        youtube_link=song.youtube_link,
-        itunes_link=song.itunes_link
-    )
-    db.add(db_song)
+def create_song_db(db: Session, song: SchemaSongIn) -> SchemaSongOut:
+    song = ModelSong(**song.__dict__)
+    db.add(song)
     db.commit()
-    db.refresh(db_song)
-    return db_song
+    db.refresh(song)
+    return SchemaSongOut(**song.__dict__)

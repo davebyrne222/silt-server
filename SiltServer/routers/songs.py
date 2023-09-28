@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from SiltServer.database.crud import get_songs, create_song
+from SiltServer.database.crud import get_songs_db, create_song_db
 from SiltServer.database.database import get_db
 from SiltServer.dependencies.auth import verify_token
 from SiltServer.schemas.songs import SchemaSongOut, SchemaSongIn, PaginatedResponse
@@ -20,11 +20,11 @@ router = APIRouter(
     summary="Get songs",
     response_model=PaginatedResponse[SchemaSongOut],
     status_code=200)
-async def root(
+async def get_songs(
         db: Annotated[Session, Depends(get_db)],
-        limit: int = Query(10, ge=1, le=50),
+        limit: int = Query(50, ge=1, le=50),
         offset: int = Query(0, ge=0)):
-    return get_songs(db, limit=limit, offset=offset)
+    return get_songs_db(db, limit=limit, offset=offset)
 
 
 @router.post(
@@ -34,4 +34,4 @@ async def root(
     response_model=SchemaSongOut,
     status_code=200)
 async def post_song(song: SchemaSongIn, db: Annotated[Session, Depends(get_db)]):
-    return create_song(db, song)
+    return create_song_db(db, song)
