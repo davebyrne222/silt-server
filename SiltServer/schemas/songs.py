@@ -32,6 +32,6 @@ M = TypeVar('M')
 class PaginatedResponse(BaseModel, Generic[M]):
     total: int
     count: int
-    limit: int
+    limit: Optional[int]
     offset: int
     items: list[M]
