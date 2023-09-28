@@ -20,13 +20,22 @@ def assert_valid_response(model, json):
 
 
 def test_get_songs():
-    response = client.get("/songs")
-
-    assert response.status_code == 200
 
     # Validate response against Pydantic model
+    response = client.get("/songs")
+    assert response.status_code == 200
     assert_valid_response(PaginatedResponse, response.json())
+    assert_valid_response(SchemaSongOut, response.json().get("items")[0])
 
+    # Limit is working
+    response = client.get("/songs?limit=10")
+    assert len(response.json().get("items")) == 10
+
+    # Offset is working
+    id_orig = response.json().get("items")[0].get("id")
+    response = client.get("/songs?offset=1")
+    id_new = response.json().get("items")[0].get("id")
+    assert id_orig != id_new
 
 def test_login_failure():
     response = client.post("/token", data=dict(username="none", password="none"))
