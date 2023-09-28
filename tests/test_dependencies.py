@@ -5,7 +5,6 @@ import pytest
 from fastapi import HTTPException
 from jose import jwt
 
-from SiltServer.database.database import get_db
 from SiltServer.dependencies.auth import authenticate_user, create_access_token, verify_token
 from SiltServer.dependencies.exceptions import raise_401_invalid_creds, raise_401_invalid_token, raise_401_expired_token
 from SiltServer.models.auth import ModelUser
