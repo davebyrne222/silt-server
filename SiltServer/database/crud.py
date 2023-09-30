@@ -22,7 +22,7 @@ def get_songs_db(db: Session, limit: int = 50, offset: int = 0) -> PaginatedResp
     return PaginatedResponse(
         count=len(results),
         total=total,
-        items=[SchemaSongOut(**result.model_dump_json()) for result in results],
+        items=[SchemaSongOut(**result.__dict__) for result in results],
         limit=limit,
         offset=offset
     )
