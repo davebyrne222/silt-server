@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import logging
 from typing import Annotated, Optional
 
 from fastapi import Depends
@@ -13,6 +14,8 @@ from SiltServer.database.database import get_db
 from SiltServer.dependencies.exceptions import raise_401_invalid_creds, raise_401_expired_token, raise_401_invalid_token
 from SiltServer.models.auth import ModelUser
 
+logger = logging.getLogger(__name__)
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -25,9 +28,12 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 1
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user_db(db, username)
     if not user:
+        logger.debug("User not found in DB")
         return False
     if not pwd_context.verify(password, user.hash):
+        logger.debug("Password not verified")
         return False
+    logger.debug("User verified")
     return user
 
 
@@ -38,11 +44,14 @@ def create_access_token(user: ModelUser, expires_delta: Optional[timedelta]):
     # set data to be encoded to jwt and return token
     to_encode = {"sub": user.username, "exp": expire}
 
+    logger.debug(f"Creating token with: {to_encode}")
+
     return jwt.encode(to_encode, user.secret, algorithm=ALGORITHM)
 
 
 def _get_username_from_token(token: str):
     payload = jwt.decode(token, key="", options={"verify_signature": False})
+    logger.debug(f"Decoded payload: {payload}")
     return payload.get("sub")
 
 
@@ -56,10 +65,13 @@ def verify_token(db: Annotated[Session, Depends(get_db)], token: Annotated[str, 
 
         # token does not represent a valid user
         if not current_user:
+            logger.debug("User not found")
             raise_401_invalid_token()
 
         # Attempt to decode: invalid token if error raised
         jwt.decode(token, current_user.secret, algorithms=[ALGORITHM])
+
+        logger.debug("Token verified")
 
     except ExpiredSignatureError:
         raise_401_expired_token()
