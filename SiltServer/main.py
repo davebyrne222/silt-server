@@ -35,6 +35,5 @@ if __name__ == "__main__":
                 port=settings.SERVER_ADDR_PORT,
                 reload=settings.SERVER_RELOAD,
                 log_config="logging_config.ini",
-                log_level="debug"
                 )
 
