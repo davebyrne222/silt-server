@@ -19,7 +19,7 @@ Base = declarative_base()
 
 # dependency for routes
 def get_db():
-    logger.debug(f"Getting database session envar TESTING={os.environ('TESTING')}")
+    logger.debug(f"Getting database session envar TESTING={os.environ['TESTING']}")
     db = SessionLocal()
     try:
         yield db
