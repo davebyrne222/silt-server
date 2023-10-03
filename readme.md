@@ -55,20 +55,20 @@ SERVER_RELOAD="False"
     ```shell
     pipenv install 
     ```
-    This will create a virtual environment and install all dependencies within it
+   This will create a virtual environment and install all dependencies within it
 
 3. Add the top level / root path to the `PYTHONPATH` to enable absolute imports:
     ```shell
     export PYTHONPATH='.'
     ```
-    **N.B.**: The working directory should be the SiltServer root dir before running this command
+   **N.B.**: The working directory should be the SiltServer root dir before running this command
 
 4. Run the uvicorn server:
     ```shell
     pipenv run python SiltServer/main.py
     ```
-    This will run the server on at the host IP and port specified in the `.env` file (see ??). The docs
-    can be access by navigating to  `http://<ip>:<port>/docs`
+   This will run the server on at the host IP and port specified in the `.env` file (see ??). The docs
+   can be access by navigating to  `http://<ip>:<port>/docs`
 
 ## Run Using Docker-Compose
 
@@ -106,18 +106,18 @@ First, ensure the database and api are running as per [Usage](#Usage)
 - [X] Create get endpoint
 - [X] Restructure project to FastAPI structure
 - [X] Create post endpoint
-  - [X] add endpoint
-  - [X] add security
-  - [X] prevent / make obvious id field is not required (pk, auto-incremented)
+    - [X] add endpoint
+    - [X] add security
+    - [X] prevent / make obvious id field is not required (pk, auto-incremented)
 - [X] Extract server and host and port to config / .env
 - [X] Add password hashing
 - [X] Add pagination to get
 - [X] Add docker
 - [ ] Add fields to song for note, genre, artwork image
 - [ ] Add unit tests
-  - [X] Add tests for routes, dependencies, and database ops
-  - [ ] Auto populate database with data
-  - [ ] Tear down database after tests
+    - [X] Add tests for routes, dependencies, and database ops
+    - [ ] Auto populate database with data
+    - [ ] Tear down database after tests
 - [ ] Add logging
 - [X] Change auth to JWT
 - [ ] Add migration support (alembic?)

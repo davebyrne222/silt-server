@@ -1,7 +1,7 @@
+import logging.config
+
 import uvicorn
 from fastapi import FastAPI
-import logging
-import logging.config
 from pydantic_settings import BaseSettings
 
 from SiltServer.database.database import engine, Base
@@ -36,4 +36,3 @@ if __name__ == "__main__":
                 reload=settings.SERVER_RELOAD,
                 log_config="logging_config.ini",
                 )
-

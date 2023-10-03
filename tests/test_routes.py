@@ -20,7 +20,6 @@ def assert_valid_response(model, json):
 
 
 def test_get_songs():
-
     # Validate response against Pydantic model
     response = client.get("/songs")
     assert response.status_code == 200
@@ -36,6 +35,7 @@ def test_get_songs():
     response = client.get("/songs?offset=1")
     id_new = response.json().get("items")[0].get("id")
     assert id_orig != id_new
+
 
 def test_login_failure():
     response = client.post("/token", data=dict(username="none", password="none"))
@@ -56,7 +56,6 @@ def get_token():
 def test_login_success(token):
     assert token.status_code == 200
     assert_valid_response(Token, token.json())
-
 
 
 def test_add_songs(token):

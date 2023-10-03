@@ -17,7 +17,6 @@ def test_get_user_db(db):
 
 
 def test_get_songs_db(db):
-
     # Correct response type
     songs = get_songs_db(db)
     assert isinstance(songs, PaginatedResponse)

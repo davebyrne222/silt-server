@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 from typing import Annotated, Optional
 
 from fastapi import Depends
@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from SiltServer.database.crud import get_user_db
 from SiltServer.database.database import get_db
-from SiltServer.dependencies.exceptions import raise_401_invalid_creds, raise_401_expired_token, raise_401_invalid_token
+from SiltServer.dependencies.exceptions import raise_401_expired_token, raise_401_invalid_token
 from SiltServer.models.auth import ModelUser
 
 logger = logging.getLogger(__name__)
